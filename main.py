@@ -1,52 +1,46 @@
+# Import libry config
 import configparser
 import json
 import logging
-import re
 
+# Import Function
 from Color.Bcolor import bcolors
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_session import Session
 from werkzeug.security import  check_password_hash
-from flask_jwt_extended import create_access_token, JWTManager, jwt_required
-
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 
 # Utils
 from Utils.HashMdp import HashMdp
 
-
+# Disable logs
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
-# Récupération du fichier config.ini
+# Retrieving the config.ini file
 config = configparser.ConfigParser()
-config.read('./Majax/config.ini')
+config.read('./config.ini')
 
-# Initialisation de fichier
+# Init app Flask
 app = Flask(__name__)
 
-SECRET_KEY = config['init']['SECRET_KEY']
-JWT_SERCRET_KEY = config['init']['JWT_SECRET_KEY']
-SESSION_COOKIE_SAMESITE = config['init']['SESSION_COOKIE_SAMESITE']
-SESSION_TYPE = config['init']['SESSION_TYPE']
-JWT_SECRET_KEY = config['init']['JWT_SECRET_KEY']
+# Default settings
+configurations = {
+    'SECRET_KEY': config['init']['SECRET_KEY'],
+    'JWT_SECRET_KEY': config['init']['JWT_SECRET_KEY'],
+    'SESSION_COOKIE_SAMESITE': config['init']['SESSION_COOKIE_SAMESITE'],
+    'SESSION_TYPE': config['init']['SESSION_TYPE'],
+    'SESSION_SECRET_KEY': config['init']['SESSION_SECRET_KEY']
+}
 
-app.config['SECRET_KEY'] = SECRET_KEY
-app.config['JWT_SECRET_KEY'] = JWT_SERCRET_KEY
-app.config['SESSION_COOKIE_SAMESITE'] = SESSION_COOKIE_SAMESITE
-app.config['SESSION_TYPE'] = SESSION_TYPE
-app.config['SESSION_SECRET_KEY'] = app.config['SECRET_KEY'] 
-app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
+app.config.update(configurations)
 
 Session(app)
 CORS(app)
-jwt = JWTManager(app)
+JWTManager(app)
 
 list_user_active = []
-
-def est_email(val):
-        pattern = re.compile(r'^[\w\.-]+@[\w\.-]+\.\w+$')
-        return bool(pattern.match(val))
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -78,7 +72,6 @@ def register():
             return jsonify({"sucess": "Successful registration"}), 200
     else :
         return jsonify({"error": "Lack of arguments"}), 200
-
 
 @app.route('/login', methods=['POST'])
 def login():
