@@ -18,5 +18,15 @@
         "Pseudo": "Mon pseudo de test",
         "Password_Hash": "pbkdf2:sha256:600000$aadmmTUbimB5sm96$36056897a6b05c8c37e2f0994e65cba5b984c2bf5abd95a9d7e0678921d6d6d6",
         "email": "dqsdqsdqsdqsd@gmail.com"
+    },
+    {
+        "Pseudo": "mON PSEUDO",
+        "Password_Hash": "pbkdf2:sha256:600000$B2gijRy1rhwH07bQ$3cef79015db9f61a1881caf2f33badd2ff683a29d0f28416f5a88ee7e451f0e4",
+        "email": "test@gmail.com"
+    },
+    {
+        "Pseudo": "mON PSEUDO",
+        "Password_Hash": "pbkdf2:sha256:600000$SMG1ETIsAiWy0bJj$8dccc0fc5a755894508772a58f864ccf7d3d1804709f14bca896daaa6b3d15f3",
+        "email": "testdsdqsdqsdqsd@gmail.com"
     }
 ]

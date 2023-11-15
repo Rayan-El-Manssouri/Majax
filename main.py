@@ -1,6 +1,8 @@
-# Import libry config
+# Import libry
 import configparser
 import json
+import logging
+import click
 
 # Import Function
 from Color.Bcolor import bcolors
@@ -13,6 +15,10 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 # Utils
 from Utils.HashMdp import HashMdp
 from Utils.ValideEmail import est_email
+from Utils.Jwt_keys.GenerateNewJwt import JwtManagerNew
+
+# Empty list creation for active
+list_user_active = []
 
 # Retrieving the config.ini file
 config = configparser.ConfigParser()
@@ -20,6 +26,18 @@ config.read('./config.ini')
 
 # Init app Flask
 app = Flask(__name__)
+log = logging.getLogger('werkzeug')
+
+log.setLevel(logging.ERROR)
+
+def secho(text, file=None, nl=None, err=None, color=None, **styles):
+    pass
+
+def echo(text, file=None, nl=None, err=None, color=None, **styles):
+    pass
+
+click.echo = echo
+click.secho = secho
 
 # Default settings
 configurations = {
@@ -32,18 +50,31 @@ configurations = {
 
 app.config.update(configurations)
 
+PORT = config['init']['PORT']
+
 Session(app)
 CORS(app)
 JWTManager(app)
 
-list_user_active = []
+JwtManagerNew.update_jwt_key()
 
+
+# Route Resgister PRIVATE
 @app.route('/register', methods=['POST'])
 def register():
+    """
+    This route needs the PUBLIC_KEY key in config.ini to work.
+    """
     data = request.get_json()
     email = data['email']
     pseudo = data['pseudo']
     password = data['password']
+    
+    # Vérifier le token
+    if not JwtManagerNew.verify_token(request.headers, data):
+        print("Tentative d'acces ...")
+        return jsonify({"error": "Unauthorized"}), 401
+    
     if email is not None and password is not None and pseudo is not None :
         if(est_email(email=email)):
             file_path = './Database/Users.json'
@@ -54,9 +85,7 @@ def register():
                 existing_data = []
 
             for user in existing_data:
-                print(user.get("email"))
                 if user.get("email") == data['email']:
-                    print(user.get("email"))
                     return jsonify({"error": "This e-mail is already in use"}), 400
 
             # Ajouter le nouveau contenu
@@ -71,7 +100,7 @@ def register():
                 json.dump(existing_data, jsonFile, indent=4)
                 return jsonify({"sucess": "Successful registration"}), 200
         else :
-            return jsonify({"error": "Email incorrect"})
+            return jsonify({"error": "Email incorrect ou mauvaise format"})
     else:
         return jsonify({"error": "Incorrect Arguments"})
 
@@ -96,7 +125,7 @@ def login():
                         if active_user['email'] == email:
                             return jsonify({"error": "Utilisateur déjà connecté"}), 200
 
-                    access_token = create_access_token(identity=email)
+                    access_token = create_access_token(identity=email, expires_delta=False)
                     user_info = {
                         "email": email,
                         "password": password,
@@ -106,9 +135,7 @@ def login():
                     list_user_active.append(user_info)
                     # Mettez à jour votre fichier JSON ou la base de données ici
                     return jsonify({"sucess": "Utilisateur connecté.", "access_token": access_token, "email": email, "Pseudo": user['Pseudo']}), 200
-
                 return jsonify({"error": "Mot de passe incorrect"}), 401
-
         return jsonify({"error": "Email inconnu"}), 404
     
 @app.route('/logout', methods=['POST'])
@@ -161,6 +188,6 @@ def home():
     return jsonify({"error": "Missing acces"})
     
 if __name__ == "__main__":
-    print(f"{bcolors.OK}Welcome to server Majax from ", config['init']['NAME_SERVER'], f"and run in the port : ", config['init']['PORT'], f"{bcolors.RESET}")
-    print("---------------------------------------------------")
+    print(f"{bcolors.OKBLUE}Starting developement server", f"{bcolors.RESET}")
+    print(f"{bcolors.OK}Api run in the url : http://localhost:{PORT} {bcolors.RESET}")
     app.run('localhost', config['init']['PORT'])
