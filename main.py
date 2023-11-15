@@ -1,7 +1,6 @@
 # Import libry config
 import configparser
 import json
-import logging
 
 # Import Function
 from Color.Bcolor import bcolors
@@ -13,10 +12,7 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 
 # Utils
 from Utils.HashMdp import HashMdp
-
-# Disable logs
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
+from Utils.ValideEmail import est_email
 
 # Retrieving the config.ini file
 config = configparser.ConfigParser()
@@ -45,33 +41,39 @@ list_user_active = []
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    if data and 'pseudo' in data and 'password' and 'email':
-        file_path = './Majax/Database/Users.json'
-        try:
-            with open(file_path, "r") as existing_file:
-                existing_data = json.load(existing_file)
-        except FileNotFoundError:
-            existing_data = []
+    email = data['email']
+    pseudo = data['pseudo']
+    password = data['password']
+    if email is not None and password is not None and pseudo is not None :
+        if(est_email(email=email)):
+            file_path = './Database/Users.json'
+            try:
+                with open(file_path, "r") as existing_file:
+                    existing_data = json.load(existing_file)
+            except FileNotFoundError:
+                existing_data = []
 
-        for user in existing_data:
-            if user.get("email") == data['email']:
+            for user in existing_data:
                 print(user.get("email"))
-                return jsonify({"error": "This e-mail is already in use"}), 400
-    
-        # Ajouter le nouveau contenu
-        new_content = {
-            "Pseudo": data['pseudo'],
-            "Password_Hash": HashMdp.hash_mdp(data['password']),
-            "email": data['email']
-        }
+                if user.get("email") == data['email']:
+                    print(user.get("email"))
+                    return jsonify({"error": "This e-mail is already in use"}), 400
 
-        existing_data.append(new_content)
-        # Écrire le contenu mis à jour dans le fichier
-        with open(file_path, "w") as jsonFile:
-            json.dump(existing_data, jsonFile, indent=4)
-            return jsonify({"sucess": "Successful registration"}), 200
-    else :
-        return jsonify({"error": "Lack of arguments"}), 200
+            # Ajouter le nouveau contenu
+            new_content = {
+                "Pseudo": data['pseudo'],
+                "Password_Hash": HashMdp.hash_mdp(data['password']),
+                "email": data['email']
+            }
+            existing_data.append(new_content)
+            # Écrire le contenu mis à jour dans le fichier
+            with open(file_path, "w") as jsonFile:
+                json.dump(existing_data, jsonFile, indent=4)
+                return jsonify({"sucess": "Successful registration"}), 200
+        else :
+            return jsonify({"error": "Email incorrect"})
+    else:
+        return jsonify({"error": "Incorrect Arguments"})
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -152,6 +154,11 @@ def CheckLogin():
         if users['email'] == email:
             return True, 200
     return False, 200
+
+
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({"error": "Missing acces"})
     
 if __name__ == "__main__":
     print(f"{bcolors.OK}Welcome to server Majax from ", config['init']['NAME_SERVER'], f"and run in the port : ", config['init']['PORT'], f"{bcolors.RESET}")

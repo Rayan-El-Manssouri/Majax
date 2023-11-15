@@ -2,7 +2,7 @@ from werkzeug.security import generate_password_hash
 
 class HashMdp:
     def hash_mdp(
-        self, password: str
+        password: str
     ):
         """
         Generates a password hasher
