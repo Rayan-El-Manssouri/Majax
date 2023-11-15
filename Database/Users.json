@@ -1,0 +1,17 @@
+[
+    {
+        "Pseudo": "Aaaaaa",
+        "Password_Hash": "pbkdf2:sha256:600000$7sLtLdOmds2ZwaFu$fe1c2131b423e8ef26676a8735900e84ab7810536f6bf27560a0295a40bb780d",
+        "email": "aaaa@gmail.com"
+    },
+    {
+        "Pseudo": "test",
+        "Password_Hash": "pbkdf2:sha256:600000$PFNFj37lnw4dUuAf$b493d08c2c5579fcefb29c3f3355118e503619e273ea4f6687fdde6c648ce393",
+        "email": "compte_utilisateur_1@gmail.com"
+    },
+    {
+        "Pseudo": "Mon test 1",
+        "Password_Hash": "pbkdf2:sha256:600000$O9GkLokS3hNqKWzW$c7a079e6e783d19c08114936a18c5609e9281bd59ba3d5eb9a364e1b0135e871",
+        "email": "test@gmail.com"
+    }
+]
