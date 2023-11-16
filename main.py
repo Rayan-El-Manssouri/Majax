@@ -114,7 +114,7 @@ def login():
     email = info['email']
     password = info['password']
 
-    with open('./Majax/Database/Users.json', 'r', encoding='utf-8') as f:
+    with open('./Database/Users.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
 
         for user in data:
@@ -154,9 +154,9 @@ def logout():
     # Suppression de l'utilisateur s'il est trouvé
     if user_to_remove:
         list_user_active.remove(user_to_remove)
-        return jsonify({'message': 'Utilisateur déconnecté avec succès'})
+        return jsonify({'sucess': 'Utilisateur déconnecté avec succès'})
     else:
-        return jsonify({'message': 'Utilisateur non trouvé'})
+        return jsonify({'error': 'Utilisateur non trouvé'})
 
 @app.route('/Fetch_Pseudo', methods=['POST'])
 @jwt_required()
@@ -170,7 +170,7 @@ def Fetch_Pseudo():
                 return jsonify({"pseudo": user['Pseudo']}), 200
             else :
                 continue
-        return jsonify({"message":"aucun compte trouvé"}), 400
+        return jsonify({"error":"aucun compte trouvé"}), 400
 
 @app.route('/CheckLogin', methods=['POST'])
 @jwt_required()
