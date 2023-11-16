@@ -53,6 +53,10 @@ pip install -m requirements.txt
 
 Lorsqu'il y a un bug identifié ou une suggestion, veuillez les signaler dans les issues de GitHub.
 
+# Security
+
+Afin de s'assuer en therme de sécuriter les clé jwt sont eux même signer via une clé RSA en RS256.
+
 # Contribution
 
 - OWNER ``prorayanelmanssouri@gmail.com``
