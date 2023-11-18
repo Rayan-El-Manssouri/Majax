@@ -199,3 +199,6 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return 'Hello word majax ! '
+
+if __name__ == "__name__":
+    app.run(debug=True)
