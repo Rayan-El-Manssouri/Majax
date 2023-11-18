@@ -182,7 +182,6 @@ def CheckLogin():
             return True, 200
     return False, 200
 
-
 @app.route('/', methods=['GET'])
 def home():
     return jsonify({"error": "Missing acces"})

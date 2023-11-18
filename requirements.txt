@@ -1,4 +1,4 @@
 flask_cors
 flask_session
 flask_jwt_extended
-flask
+flask==2.2.2
