@@ -15,7 +15,6 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 from api.Color.Bcolor import bcolors
 from api.Utils.HashMdp import HashMdp
 from api.Utils.ValideEmail import est_email
-from api.Utils.Jwt_keys.GenerateNewJwt import JwtManagerNew
 
 # Empty list creation for active
 list_user_active = []
@@ -56,9 +55,6 @@ Session(app)
 CORS(app)
 JWTManager(app)
 
-JwtManagerNew.update_jwt_key()
-
-
 # Route Resgister PRIVATE
 @app.route('/register', methods=['POST'])
 def register():
@@ -69,11 +65,6 @@ def register():
     email = data['email']
     pseudo = data['pseudo']
     password = data['password']
-    
-    # Vérifier le token
-    if not JwtManagerNew.verify_token(request.headers, data):
-        print("Tentative d'acces ...")
-        return jsonify({"error": "Unauthorized"}), 401
     
     if email is not None and password is not None and pseudo is not None :
         if(est_email(email=email)):
