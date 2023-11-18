@@ -1,5 +1,5 @@
-flask_cors
-flask_session
-flask_jwt_extended
+# flask_cors
+# flask_session
+# flask_jwt_extended
 flask==2.2.2
-Werkzeug
+# Werkzeug
