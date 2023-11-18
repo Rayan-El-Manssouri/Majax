@@ -1,2 +1,5 @@
 flask_session
+node_modules
+
+# Secret files
 .vercel
