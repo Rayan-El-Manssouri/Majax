@@ -1,0 +1,11 @@
+{
+  "name": "majax",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">\r   <a href=\"https://github.com/Rayan-El-Manssouri/Majax#readme\">\r     <img src=\"./assets/detailled dark.svg\" alt=\"Majax logo\" style=\"max-width: 30%;\" >\r   </a>\r </p>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
