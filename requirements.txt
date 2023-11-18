@@ -1,4 +1,4 @@
-crypto==1.4.1
+pycryptodome==3.19.0
 Flask-JWT-Extended==4.5.3
 Flask==2.3.2
 Flask-Cors==3.0.10
