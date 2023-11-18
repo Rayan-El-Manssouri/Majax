@@ -1,5 +1,1 @@
-# flask_cors
-# flask_session
-# flask_jwt_extended
-flask==2.2.2
-# Werkzeug
+Flask==3.0.0
