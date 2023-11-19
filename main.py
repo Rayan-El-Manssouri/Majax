@@ -68,7 +68,7 @@ def register():
     
     if email is not None and password is not None and pseudo is not None :
         if(est_email(email=email)):
-            file_path = './Database/Users.json'
+            file_path = 'api/Database/Users.json'
             try:
                 with open(file_path, "r") as existing_file:
                     existing_data = json.load(existing_file)
@@ -105,7 +105,7 @@ def login():
     email = info['email']
     password = info['password']
 
-    with open('./Database/Users.json', 'r', encoding='utf-8') as f:
+    with open('api/Database/Users.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
 
         for user in data:
@@ -154,7 +154,7 @@ def logout():
 def Fetch_Pseudo():
     info = request.get_json()
     email = info['user_email']
-    with open('./Majax/Database/Users.json', 'r', encoding='utf-8') as f:
+    with open('api/Database/Users.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
         for user in data:
             if (user['email'] == email):
